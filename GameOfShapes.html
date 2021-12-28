@@ -1,0 +1,93 @@
+<!-- Shapes -->
+##  Specification and original idea  : Dr A J Doyle
+##  Coded by OpenAI Javascript Codex  -->
+<!DOCTYPE html>
+
+<html lang="en">
+
+    <head>
+    <meta charset="UTF-8">
+    <title>Balloon Click</title>
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+/* create a random number of shapes which move all over the screen when a button is pressed, triangles, pentagon, rectangles, */
+var shapes = [];
+var button = document.createElement('button');
+button.innerHTML = 'Create Shapes';
+button.addEventListener('click', function() {
+  for (var i = 0; i < Math.floor(Math.random() * 10); i++) {
+    var shape = document.createElement('div');
+    shape.style.backgroundColor = '#' + Math.floor(Math.random() * 0xffffff).toString(16);
+    shape.style.position = 'absolute';
+    shape.style.left = Math.floor(Math.random() * window.innerWidth) + 'px';
+    shape.style.top = Math.floor(Math.random() * window.innerHeight) + 'px';
+    shape.style.width = Math.floor(Math.random() * 100) + 'px';
+    shape.style.height = Math.floor(Math.random() * 100) + 'px';
+    shape.style.borderRadius = Math.floor(Math.random() * 100) + 'px';
+    document.body.appendChild(shape);
+    shapes.push(shape);
+  }
+});
+document.body.appendChild(button);
+
+/* a ball moves around the screen and clears the shapes off */
+var ball = document.createElement('div');
+ball.style.backgroundColor = '#ff0000';
+ball.style.position = 'absolute';
+ball.style.left = Math.floor(Math.random() * window.innerWidth) + 'px';
+ball.style.top = Math.floor(Math.random() * window.innerHeight) + 'px';
+ball.style.width = '20px';
+ball.style.height = '20px';
+ball.style.borderRadius = '20px';
+document.body.appendChild(ball);
+var moveBall = function() {
+  ball.style.left = Math.floor(Math.random() * window.innerWidth) + 'px';
+  ball.style.top = Math.floor(Math.random() * window.innerHeight) + 'px';
+};
+var moveShapes = function() {
+  for (var i = 0; i < shapes.length; i++) {
+    shapes[i].style.left = Math.floor(Math.random() * window.innerWidth) + 'px';
+    shapes[i].style.top = Math.floor(Math.random() * window.innerHeight) + 'px';
+  }
+};
+var clearShapes = function() {
+  for (var i = 0; i < shapes.length; i++) {
+    document.body.removeChild(shapes[i]);
+  }
+  shapes = [];
+};
+var clearBall = function() {
+  document.body.removeChild(ball);
+};
+var clearAll = function() {
+  clearShapes();
+  clearBall();
+};
+var button2 = document.createElement('button');
+button2.innerHTML = 'Clear All';
+button2.addEventListener('click', function() {
+  clearAll();
+});
+document.body.appendChild(button2);
+var button3 = document.createElement('button');
+button3.innerHTML = 'Move Shapes';
+button3.addEventListener('click', function() {
+  moveShapes();
+});
+document.body.appendChild(button3);
+var button4 = document.createElement('button');
+button4.innerHTML = 'Move Ball';
+button4.addEventListener('click', function() {
+  moveBall();
+});
+document.body.appendChild(button4);
+
+
+});
+        </script>
+    </head>
+    <body style="margin: 0;">
+    <h1>Welcome to the game of Shapes</h1>
+       </body>
+</html>
