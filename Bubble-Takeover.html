@@ -107,4 +107,69 @@ button.addEventListener('click', function() {
 });
 
         </script>
+    </head>
+</html>
+    if (this.y + this.radius > innerHeight || this.y - this.radius < 0) {
+      this.dy = -this.dy;
+    }
+    this.x += this.dx;
+    this.y += this.dy;
+  };
+  this.reposition = function() {
+    this.x = Math.random() * (innerWidth - this.radius * 2) + this.radius;
+    this.y = Math.random() * (innerHeight - this.radius * 2) + this.radius;
+    this.dx = (Math.random() - 0.5) * 2;
+    this.dy = (Math.random() - 0.5) * 2;
+  };
+  this.reposition();
+}
+function animate() {
+  requestAnimationFrame(animate);
+  ctx.clearRect(0, 0, innerWidth, innerHeight);
+  bubbles.forEach(function(bubble) {
+    bubble.draw();
+    bubble.update();
+  });
+  bubbles.push(new Bubble(Math.random() * (innerWidth - maxRadius * 2) + maxRadius,
+    Math.random() * (innerHeight - maxRadius * 2) + maxRadius,
+    (Math.random() - 0.5) * 2,
+    (Math.random() - 0.5) * 2,
+    maxRadius));
+}
+animate();
+
+/* Approximately ever minute all the balls pop */
+setInterval(function() {
+  bubbles.forEach(function(bubble) {
+    bubble.radius = minRadius;
+  });
+}, 60000);
+
+/* click on the screen and balls in that area pop */
+canvas.addEventListener('click', function(event) {
+  bubbles.forEach(function(bubble) {
+    if (Math.pow(event.pageX - bubble.x, 2) + Math.pow(event.pageY - bubble.y, 2) < Math.pow(bubble.radius, 2)) {
+      bubble.radius = minRadius;
+    }
+  });
+});
+
+/* Approximately every  2 minute balls start to fall off the screen */
+setInterval(function() {
+  bubbles.forEach(function(bubble) {
+    bubble.dy += 0.05;
+  });
+}, 120000);
+
+/* a silver button pops all the balloons off the screen */
+var button = document.createElement('button');
+button.innerHTML = 'Clear';
+document.body.appendChild(button);
+button.addEventListener('click', function() {
+  bubbles.forEach(function(bubble) {
+    bubble.radius = minRadius;
+  });
+});
+
+        </script>
 </html>
