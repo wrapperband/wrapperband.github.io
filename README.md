@@ -2,7 +2,7 @@
 
 Go Balloon Click!
 
-https://wrapperband.github.io/Ball-Squisher.html
+https://wrapperband.github.io/Balloon-Click.html
 
 # Ball Squisher, The Global monopoly game
 
