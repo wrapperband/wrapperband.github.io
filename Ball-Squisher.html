@@ -4,10 +4,7 @@
 <!DOCTYPE html>
 
 <html lang="en">
-
     <head>
-    <meta charset="UTF-8">
-    <title>Balloon Squisher</title>
         <script>
         document.addEventListener("DOMContentLoaded", function() {
 
@@ -16,20 +13,25 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 document.body.appendChild(canvas);
 var ctx = canvas.getContext('2d');
+
 var mouse = {
   x: undefined,
   y: undefined
 };
+
 var animals = [];
+
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
 function randomColor() {
   var r = getRandomInt(0, 255);
   var g = getRandomInt(0, 255);
   var b = getRandomInt(0, 255);
   return 'rgb(' + r + ',' + g + ',' + b + ')';
 }
+
 function Ball(x, y, radius, color) {
   this.x = x;
   this.y = y;
@@ -44,6 +46,69 @@ function Ball(x, y, radius, color) {
     ctx.fill();
   };
   this.update = function() {
+    if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
+      this.dx = -this.dx;
+    }
+    if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
+      this.dy = -this.dy;
+    }
+    this.x += this.dx;
+    this.y += this.dy;
+  };
+  this.checkCollision = function(other) {
+    var distance = Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
+    return distance < this.radius + other.radius;
+  };
+  this.eat = function(other) {
+    this.radius += other.radius / 2;
+    other.radius = other.radius / 2;
+    other.x = getRandomInt(0, canvas.width);
+    other.y = getRandomInt(0, canvas.height);
+    other.color = randomColor();
+  };
+}
+
+function addBall() {
+  var radius = getRandomInt(10, 20);
+  var x = getRandomInt(radius, canvas.width - radius);
+  var y = getRandomInt(radius, canvas.height - radius);
+  var color = randomColor();
+  animals.push(new Ball(x, y, radius, color));
+}
+
+function loop() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (var i = 0; i < animals.length; i++) {
+    var animal = animals[i];
+    animal.draw();
+    animal.update();
+    for (var j = 0; j < animals.length; j++) {
+      var other = animals[j];
+      if (i !== j && animal.checkCollision(other)) {
+        if (animal.radius > other.radius) {
+          animal.eat(other);
+        } else {
+          other.eat(animal);
+        }
+      }
+    }
+  }
+  requestAnimationFrame(loop);
+}
+
+loop();
+
+document.addEventListener('mousemove', function(e) {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+
+document.addEventListener('click', function() {
+  addBall();
+});
+});
+        </script>
+</html>
     if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
       this.dx = -this.dx;
     }
