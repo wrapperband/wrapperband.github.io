@@ -22,3 +22,8 @@ https://wrapperband.github.io/Ball-oholic.html
 # Bubble Takeover, You can never win!
 
 https://wrapperband.github.io/Bubble-Takeover.html
+
+# Game of Shapes
+
+https://wrapperband.github.io/GameOfShapes.html
+
