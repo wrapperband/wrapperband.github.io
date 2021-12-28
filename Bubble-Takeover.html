@@ -1,0 +1,110 @@
+<!-- Bubble-Takeover
+##  Specification and original idea : Dr A J Doyle
+##  Coded by OpenAI Javascript Codex  -->
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+/* different shapes  objects with lots of colours move everywhere over the screen */
+var canvas = document.createElement('canvas');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+document.body.appendChild(canvas);
+var ctx = canvas.getContext('2d');
+var mouse = {
+  x: 0,
+  y: 0
+};
+var colors = [
+  '#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66',
+  '#FF5959', '#FFB259', '#FFDB59', '#B5FF59',
+  '#59FF59', '#59FFB5', '#59FFFF', '#59B5FF',
+  '#FF59FF', '#FFAC59', '#FFD359', '#B5FF59'
+];
+var maxRadius = 50;
+var minRadius = 5;
+var bubbles = [];
+function Bubble(x, y, dx, dy, radius) {
+  this.x = x;
+  this.y = y;
+  this.dx = dx;
+  this.dy = dy;
+  this.radius = radius;
+  this.color = colors[Math.floor(Math.random() * colors.length)];
+  this.draw = function() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+    ctx.fillStyle = this.color;
+    ctx.fill();
+  };
+  this.update = function() {
+    if (this.x + this.radius > innerWidth || this.x - this.radius < 0) {
+      this.dx = -this.dx;
+    }
+    if (this.y + this.radius > innerHeight || this.y - this.radius < 0) {
+      this.dy = -this.dy;
+    }
+    this.x += this.dx;
+    this.y += this.dy;
+  };
+  this.reposition = function() {
+    this.x = Math.random() * (innerWidth - this.radius * 2) + this.radius;
+    this.y = Math.random() * (innerHeight - this.radius * 2) + this.radius;
+    this.dx = (Math.random() - 0.5) * 2;
+    this.dy = (Math.random() - 0.5) * 2;
+  };
+  this.reposition();
+}
+function animate() {
+  requestAnimationFrame(animate);
+  ctx.clearRect(0, 0, innerWidth, innerHeight);
+  bubbles.forEach(function(bubble) {
+    bubble.draw();
+    bubble.update();
+  });
+  bubbles.push(new Bubble(Math.random() * (innerWidth - maxRadius * 2) + maxRadius,
+    Math.random() * (innerHeight - maxRadius * 2) + maxRadius,
+    (Math.random() - 0.5) * 2,
+    (Math.random() - 0.5) * 2,
+    maxRadius));
+}
+animate();
+
+/* Approximately ever minute all the balls pop */
+setInterval(function() {
+  bubbles.forEach(function(bubble) {
+    bubble.radius = minRadius;
+  });
+}, 60000);
+
+/* click on the screen and balls in that area pop */
+canvas.addEventListener('click', function(event) {
+  bubbles.forEach(function(bubble) {
+    if (Math.pow(event.pageX - bubble.x, 2) + Math.pow(event.pageY - bubble.y, 2) < Math.pow(bubble.radius, 2)) {
+      bubble.radius = minRadius;
+    }
+  });
+});
+
+/* Approximately every  2 minute balls start to fall off the screen */
+setInterval(function() {
+  bubbles.forEach(function(bubble) {
+    bubble.dy += 0.05;
+  });
+}, 120000);
+
+/* a silver button pops all the balloons off the screen */
+var button = document.createElement('button');
+button.innerHTML = 'Clear';
+document.body.appendChild(button);
+button.addEventListener('click', function() {
+  bubbles.forEach(function(bubble) {
+    bubble.radius = minRadius;
+  });
+});
+
+        </script>
+</html>
