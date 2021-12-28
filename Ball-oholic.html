@@ -3,47 +3,96 @@
 ##  Coded by OpenAI Javascript Codex  -->
 <!DOCTYPE html>
 
-<html lang="en">
+<html>
     <head>
         <script>
         document.addEventListener("DOMContentLoaded", function() {
 
-/* different shapes  objects move everywhere over the screen if you press the big flashing button in the centre */
 var canvas = document.createElement('canvas');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 document.body.appendChild(canvas);
 var ctx = canvas.getContext('2d');
+
 var mouse = {
   x: 0,
   y: 0
 };
+
 var colors = [
-  '#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66'
+  '#2185C5', '#7ECEFD', '#FFF6E5', '#FF7F66',
+  '#FF5959', '#FFB259', '#FFF259', '#B5FF59',
+  '#59FF59', '#59FFB5', '#59FFFF', '#59B5FF',
+  '#FF59FF', '#FFAC59', '#FFF259', '#B5FF59'
 ];
-// Event listeners
-addEventListener('mousemove', function (event) {
-  mouse.x = event.clientX;
-  mouse.y = event.clientY;
-});
-addEventListener('resize', function () {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  init();
-});
-// Objects
-function Circle (x, y, dx, dy, radius) {
+
+var maxRadius = 50;
+var minRadius = 10;
+
+var bubbles = [];
+
+function Bubble(x, y, dx, dy, radius) {
   this.x = x;
   this.y = y;
   this.dx = dx;
   this.dy = dy;
   this.radius = radius;
-  this.minRadius = radius;
   this.color = colors[Math.floor(Math.random() * colors.length)];
-  this.draw = function () {
+
+  this.draw = function() {
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
     ctx.fillStyle = this.color;
+    ctx.fill();
+  };
+
+  this.update = function() {
+    if (this.x + this.radius > innerWidth || this.x - this.radius < 0) {
+      this.dx = -this.dx;
+    }
+    if (this.y + this.radius > innerHeight || this.y - this.radius < 0) {
+      this.dy = -this.dy;
+    }
+    this.x += this.dx;
+    this.y += this.dy;
+  };
+
+  this.reposition = function() {
+    this.x = Math.random() * (innerWidth - this.radius * 2) + this.radius;
+    this.y = Math.random() * (innerHeight - this.radius * 2) + this.radius;
+    this.dx = (Math.random() - 0.5) * 4;
+    this.dy = (Math.random() - 0.5) * 4;
+  };
+
+  this.reposition();
+}
+
+function animate() {
+  requestAnimationFrame(animate);
+  ctx.clearRect(0, 0, innerWidth, innerHeight);
+
+  bubbles.forEach(function(bubble) {
+    bubble.draw();
+    bubble.update();
+  });
+
+  bubbles.push(new Bubble(mouse.x, mouse.y, 0, 0, Math.random() * maxRadius + minRadius));
+
+  while (bubbles.length > 100) {
+    bubbles.shift().reposition();
+  }
+}
+
+animate();
+
+document.addEventListener('mousemove', function(event) {
+  mouse.x = event.clientX;
+  mouse.y = event.clientY;
+});
+});
+        </script>
+    </head>
+  </html>
     ctx.fill();
   };
   this.update = function () {
