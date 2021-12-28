@@ -88,48 +88,8 @@ animate();
 document.addEventListener('mousemove', function(event) {
   mouse.x = event.clientX;
   mouse.y = event.clientY;
-});
+ });
 });
         </script>
     </head>
   </html>
-    ctx.fill();
-  };
-  this.update = function () {
-    if (this.x + this.radius > innerWidth || this.x - this.radius < 0) {
-      this.dx = -this.dx;
-    }
-    if (this.y + this.radius > innerHeight || this.y - this.radius < 0) {
-      this.dy = -this.dy;
-    }
-    this.x += this.dx;
-    this.y += this.dy;
-    this.radius = Math.max(this.minRadius, this.radius - 0.5);
-  };
-}
-// Initialize objects
-function init() {
-  circles = [];
-  for (var i = 0; i < 100; i++) {
-    var radius = Math.random() * 20 + 10;
-    var x = Math.random() * (innerWidth - radius * 2) + radius;
-    var y = Math.random() * (innerHeight - radius * 2) + radius;
-    var dx = (Math.random() - 0.5) * 2;
-    var dy = (Math.random() - 0.5) * 2;
-    circles.push(new Circle(x, y, dx, dy, radius));
-  }
-}
-// Animation loop
-function animate() {
-  requestAnimationFrame(animate);
-  ctx.clearRect(0, 0, innerWidth, innerHeight);
-  for (var i = 0; i < circles.length; i++) {
-    circles[i].draw();
-    circles[i].update();
-  }
-}
-init();
-animate();
-        </script>
-   </head>
-</html>
