@@ -1,0 +1,80 @@
+<!-- Push Me Pull Mer
+##  Specification and original idea : Dr A J Doyle
+##  Coded by OpenAI Javascript Codex  -->
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+/* a button in the centre of the screen says "Push me" and "Pull me" random numbers of balls move down when you press the button */
+var button = document.createElement('button');
+button.innerHTML = 'Push me';
+document.body.appendChild(button);
+var button2 = document.createElement('button');
+button2.innerHTML = 'Pull me';
+document.body.appendChild(button2);
+var balls = [];
+var canvas = document.createElement('canvas');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+document.body.appendChild(canvas);
+var ctx = canvas.getContext('2d');
+function Ball(x, y, radius, color) {
+  this.x = x;
+  this.y = y;
+  this.radius = radius;
+  this.color = color;
+  this.speed = Math.random() * 2 + 1;
+  this.angle = Math.random() * Math.PI * 2;
+}
+Ball.prototype.draw = function() {
+  ctx.beginPath();
+  ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+  ctx.fillStyle = this.color;
+  ctx.fill();
+};
+Ball.prototype.update = function() {
+  this.x += Math.cos(this.angle) * this.speed;
+  this.y += Math.sin(this.angle) * this.speed;
+  if (this.y + this.radius > canvas.height) {
+    this.y = canvas.height - this.radius;
+    this.angle = Math.PI - this.angle;
+  }
+};
+function addBall() {
+  var radius = Math.random() * 10 + 5;
+  var x = Math.random() * (canvas.width - radius * 2) + radius;
+  var y = -Math.random() * (canvas.height - radius * 2) - radius;
+  var color = '#' + Math.random().toString(16).substr(-6);
+  balls.push(new Ball(x, y, radius, color));
+}
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (var i = 0; i < balls.length; i++) {
+    balls[i].draw();
+    balls[i].update();
+  }
+  requestAnimationFrame(draw);
+}
+for (var i = 0; i < 100; i++) {
+  addBall();
+}
+draw();
+button.addEventListener('click', function() {
+  for (var i = 0; i < 100; i++) {
+    addBall();
+  }
+});
+button2.addEventListener('click', function() {
+  while (balls.length > 0) {
+    balls.pop();
+  }
+});
+
+
+});
+        </script>
+    </head>
+</html>
