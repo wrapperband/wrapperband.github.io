@@ -72,7 +72,12 @@ button2.addEventListener('click', function() {
     balls.pop();
   }
 });
-
+/* at random times all the ball jump up a random height */
+var interval2 = setInterval(function() {
+  for (var i = 0; i < balls.length; i++) {
+    balls[i].y -= Math.random() * 150;
+  }
+}, Math.random()* 7500);
 
 });
         </script>
