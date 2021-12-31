@@ -1,0 +1,65 @@
+<!-- Make it Happen
+##  Specification and original idea : Dr A J Doyle
+##  Coded by OpenAI Javascript Codex  -->
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+Create game called shapes, there is a "Make shapes" button, the "Make shapes" button creates a random number various coloured shapes like triangles, circles rectangles and polygons and draws them all about the screen. The all then move in wiggle motion towards the centre */
+var shapes = document.createElement('div');
+shapes.innerHTML = '<button id="makeShapes">Make it Happen</button>';
+document.body.appendChild(shapes);
+var canvas = document.createElement('canvas');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+document.body.appendChild(canvas);
+var ctx = canvas.getContext('2d');
+var shapesArray = [];
+var makeShapes = function() {
+  var shape = {
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    size: Math.random() * 50 + 10,
+    color: '#' + Math.random().toString(16).substr(-6),
+    wiggle: Math.random() * 0.1,
+    wiggleSpeed: Math.random() * 0.1,
+    wiggleDir: Math.random() * 2 - 1,
+    draw: function() {
+      ctx.beginPath();
+      ctx.fillStyle = this.color;
+      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+      ctx.fill();
+    },
+    move: function() {
+      this.x += Math.sin(this.wiggle * this.wiggleDir) * this.wiggleSpeed;
+      this.y += Math.cos(this.wiggle * this.wiggleDir) * this.wiggleSpeed;
+      this.wiggle += this.wiggleDir * this.wiggleSpeed;
+      if (this.x < 0 || this.x > canvas.width) {
+        this.wiggleDir *= -1;
+      }
+      if (this.y < 0 || this.y > canvas.height) {
+        this.wiggleDir *= -1;
+      }
+    }
+  };
+  shapesArray.push(shape);
+};
+var drawShapes = function() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (var i = 0; i < shapesArray.length; i++) {
+    shapesArray[i].draw();
+    shapesArray[i].move();
+  }
+};
+var interval = setInterval(drawShapes, 10);
+document.getElementById('makeShapes').addEventListener('click', makeShapes);
+
+
+
+});
+        </script>
+    </head>
+</html>
