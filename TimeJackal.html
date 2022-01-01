@@ -1,0 +1,61 @@
+<!-- Time Jackal
+##  Specification and original idea : Dr A J Doyle
+##  Coded by OpenAI Javascript Codex  -->
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+/*"Time Jackal" is a game where rings expand where you click on the screen */
+var canvas = document.createElement('canvas');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+document.body.appendChild(canvas);
+var ctx = canvas.getContext('2d');
+var rings = [];
+var mouse = { x: 0, y: 0 };
+var mouseDown = false;
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (var i = 0; i < rings.length; i++) {
+    var ring = rings[i];
+    ring.radius += ring.speed;
+    ctx.beginPath();
+    ctx.arc(ring.x, ring.y, ring.radius, 0, Math.PI * 2, false);
+    ctx.fillStyle = ring.color;
+    ctx.fill();
+    if (ring.radius > canvas.width) {
+      rings.splice(i, 1);
+      i--;
+    }
+  }
+  if (mouseDown) {
+    rings.push({
+      x: mouse.x,
+      y: mouse.y,
+      radius: 0,
+      speed: 1,
+      color: '#' + Math.random().toString(16).substr(2, 6)
+    });
+  }
+  requestAnimationFrame(draw);
+}
+canvas.addEventListener('mousedown', function(e) {
+  mouseDown = true;
+});
+canvas.addEventListener('mouseup', function(e) {
+  mouseDown = false;
+});
+canvas.addEventListener('mousemove', function(e) {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+draw();
+
+
+});
+        </script>
+    </head>
+</html>
