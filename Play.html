@@ -1,0 +1,25 @@
+/* The "Make Triangles" button creates many rotating triangle shapes which move around the screen by themselves */
+var makeTriangles = document.createElement('button');
+makeTriangles.innerHTML = 'Play';
+document.body.appendChild(makeTriangles);
+makeTriangles.addEventListener('click', function() {
+  var triangles = [];
+  for (var i = 0; i < 100; i++) {
+    var triangle = document.createElement('div');
+    triangle.style.width = '50px';
+    triangle.style.height = '50px';
+    triangle.style.backgroundColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+    triangle.style.position = 'absolute';
+    triangle.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
+    triangle.style.transformOrigin = '50% 50%';
+    triangle.style.transition = 'all 0.5s ease-in-out';
+    document.body.appendChild(triangle);
+    triangles.push(triangle);
+  }
+  setInterval(function() {
+    for (var i = 0; i < triangles.length; i++) {
+      triangles[i].style.top = Math.random() * window.innerHeight + 'px';
+      triangles[i].style.left = Math.random() * window.innerWidth + 'px';
+    }
+  }, Math.random() * 4000);
+});
