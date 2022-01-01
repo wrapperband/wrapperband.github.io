@@ -1,0 +1,54 @@
+<!-- Ruin It
+##  Specification and original idea : Dr A J Doyle
+##  Coded by OpenAI Javascript Codex  -->
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+/* the "Make shapes" button creates a random number various coloured shapes like triangles */
+var makeShapes = document.createElement('button');
+makeShapes.innerHTML = 'Make shapes';
+document.body.appendChild(makeShapes);
+makeShapes.addEventListener('click', function() {
+  var numShapes = Math.floor(Math.random() * 10) + 1;
+  for (var i = 0; i < numShapes; i++) {
+    var shape = document.createElement('div');
+    shape.style.backgroundColor = 'rgb(' + Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ')';
+    shape.style.width = Math.floor(Math.random() * 100) + 'px';
+    shape.style.height = Math.floor(Math.random() * 100) + 'px';
+    shape.style.position = 'absolute';
+    shape.style.left = Math.floor(Math.random() * window.innerWidth) + 'px';
+    shape.style.top = Math.floor(Math.random() * window.innerHeight) + 'px';
+    document.body.appendChild(shape);
+  }
+});
+
+/* The "Ruin It" button creates many rotating triangle shapes which move */
+var makeTriangles = document.createElement('button');
+makeTriangles.innerHTML = 'Ruin It';
+document.body.appendChild(makeTriangles);
+makeTriangles.addEventListener('click', function() {
+  var numTriangles = Math.floor(Math.random() * 10) + 1;
+  for (var i = 0; i < numTriangles; i++) {
+    var triangle = document.createElement('div');
+    triangle.style.backgroundColor = 'rgb(' + Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ',' + Math.floor(Math.random() * 255) + ')';
+    triangle.style.width = Math.floor(Math.random() * 100) + 'px';
+    triangle.style.height = Math.floor(Math.random() * 100) + 'px';
+    triangle.style.position = 'absolute';
+    triangle.style.left = Math.floor(Math.random() * window.innerWidth) + 'px';
+    triangle.style.top = Math.floor(Math.random() * window.innerHeight) + 'px';
+    triangle.style.transform = 'rotate(' + Math.floor(Math.random() * 360) + 'deg)';
+    document.body.appendChild(triangle);
+  }
+});
+
+
+
+
+});
+        </script>
+    </head>
+</html>
