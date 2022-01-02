@@ -85,4 +85,7 @@ https://wrapperband.github.io/Play.html
 
 https://wrapperband.github.io/TimeJackal.html
 
+# Magic Rings
+
+https://wrapperband.github.io/MagicRings.html
 
