@@ -87,5 +87,7 @@ https://wrapperband.github.io/TimeJackal.html
 
 # Magic Rings
 
+![alt tag](https://raw.githubusercontent.com/wrapperband/Balloon-Click/main/MagicRings-small.jpg)
+
 https://wrapperband.github.io/MagicRings.html
 
