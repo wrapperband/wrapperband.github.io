@@ -1,0 +1,70 @@
+<!-- Magic Rings
+##  Specification and original idea : Dr A J Doyle
+##  Coded by OpenAI Javascript Codex  -->
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+/* The  game of Mouse Click on the screen to draw expanding hoops, using the mouse position as the centre of the hoops. */
+var canvas = document.createElement('canvas');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+document.body.appendChild(canvas);
+var ctx = canvas.getContext('2d');
+var mouse = {
+  x: 0,
+  y: 0
+};
+var maxRadius = 50;
+var hue = 0;
+var click = {
+  down: false,
+  radius: maxRadius
+};
+function getMousePos(canvas, evt) {
+  var rect = canvas.getBoundingClientRect();
+  return {
+    x: evt.clientX - rect.left,
+    y: evt.clientY - rect.top
+  };
+}
+function loop() {
+  requestAnimationFrame(loop);
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.globalCompositeOperation = 'lighter';
+  ctx.strokeStyle = 'hsl(' + hue + ', 100%, 50%)';
+  ctx.lineWidth = 2;
+  if (click.down) {
+    ctx.beginPath();
+    ctx.arc(mouse.x, mouse.y, click.radius, 0, Math.PI * 2, false);
+    ctx.stroke();
+    click.radius += 1;
+  }
+  hue++;
+  if (hue >= 360) {
+    hue = 0;
+  }
+}
+loop();
+document.addEventListener('mousemove', function (evt) {
+  mouse.x = getMousePos(canvas, evt).x;
+  mouse.y = getMousePos(canvas, evt).y;
+});
+document.addEventListener('mousedown', function (evt) {
+  click.down = true;
+  click.radius = maxRadius;
+});
+document.addEventListener('mouseup', function (evt) {
+  click.down = false;
+});
+
+
+
+});
+        </script>
+    </head>
+</html>
