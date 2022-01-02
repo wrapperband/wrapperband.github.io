@@ -5,6 +5,8 @@
 
 Go Balloon Click!
 
+![alt tag](https://raw.githubusercontent.com/wrapperband/Balloon-Click/main/Balloon-Click-small.jpg)
+
 https://wrapperband.github.io/Balloon-Click.html
 
 # Ball Squisher, The Global Monopoly Ball game
