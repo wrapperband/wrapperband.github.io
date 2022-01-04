@@ -93,7 +93,7 @@ document.body.appendChild(button);
 button.addEventListener('click', function() {
   for (var i = 0; i < balls.length; i++) {
     balls[i].radius += 1;
-      if (balls[i].radius < 30) {
+      if (balls[i].radius > 30) {
       balls[i].radius = 30; }
   }
 });
