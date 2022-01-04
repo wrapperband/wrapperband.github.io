@@ -54,10 +54,10 @@ function loop() {
       if (distance < balls[i].radius + balls[j].radius) {
         balls[i].color = '#' + Math.floor(Math.random() * 16777215).toString(16);
         balls[j].color = '#' + Math.floor(Math.random() * 16777215).toString(16);
-        balls[i].speedX = -balls[i].speedX;
-        balls[i].speedY = -balls[i].speedY;
-        balls[j].speedX = -balls[j].speedX;
-        balls[j].speedY = -balls[j].speedY;
+        balls[i].speedX = -balls[i].speedX - 1;
+        balls[i].speedY = -balls[i].speedY - 1;
+        balls[j].speedX = -balls[j].speedX + 1;
+        balls[j].speedY = -balls[j].speedY + 1;
       }
     }
   }
