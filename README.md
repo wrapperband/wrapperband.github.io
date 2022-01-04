@@ -93,7 +93,7 @@ https://wrapperband.github.io/MagicRings.html
 
 # Proton Garden
 
-![alt tag](https://raw.githubusercontent.com/wrapperband/Balloon-Click/main/MagicRings-small.jpg)
+![alt tag](https://raw.githubusercontent.com/wrapperband/Balloon-Click/main/ProtonGarden-small.jpg)
 
 https://wrapperband.github.io/ProtonGarden.html
 
