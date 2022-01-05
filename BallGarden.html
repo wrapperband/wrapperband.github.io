@@ -1,0 +1,129 @@
+<!-- Ball Garden
+##  Specification and original idea : Dr A J Doyle
+##  Coded by OpenAI Javascript Codex  -->
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+/* make the balls bounce off each other when they bounce they change colour */
+var canvas = document.createElement('canvas');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+document.body.appendChild(canvas);
+var ctx = canvas.getContext('2d');
+var balls = [];
+var mouse = { x: 0, y: 0 };
+function Ball(x, y, radius, color) {
+  this.x = x;
+  this.y = y;
+  this.radius = radius;
+  this.color = color;
+  this.speedX = Math.random() * 10 - 5;
+  this.speedY = Math.random() * 10 - 5;
+}
+Ball.prototype.draw = function() {
+  ctx.beginPath();
+  ctx.fillStyle = this.color;
+  ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+  ctx.fill();
+};
+Ball.prototype.update = function() {
+  if (this.x + this.radius > canvas.width || this.x - this.radius < 0) {
+    this.speedX = -this.speedX;
+  }
+  if (this.y + this.radius > canvas.height || this.y - this.radius < 0) {
+    this.speedY = -this.speedY;
+  }
+  this.x += this.speedX;
+  this.y += this.speedY;
+};
+function loop() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (var i = 0; i < balls.length; i++) {
+    balls[i].draw();
+    balls[i].update();
+  }
+  for (var i = 0; i < balls.length; i++) {
+    for (var j = i + 1; j < balls.length; j++) {
+      var dx = balls[i].x - balls[j].x;
+      var dy = balls[i].y - balls[j].y;
+      var distance = Math.sqrt(dx * dx + dy * dy);
+      if (distance < balls[i].radius + balls[j].radius) {
+        balls[i].color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+        balls[j].color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+        balls[i].speedX = -balls[i].speedX - (1 * (balls[j].radius / balls[i].radius));
+        balls[i].speedY = -balls[i].speedY - (1 * (balls[j].radius / balls[i].radius));
+        balls[j].speedX = -balls[j].speedX + (1 * (balls[i].radius / balls[j].radius));
+        balls[j].speedY = -balls[j].speedY + (1 * (balls[i].radius / balls[j].radius));
+      }
+    }
+  }
+  requestAnimationFrame(loop);
+}
+function mouseMove(e) {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+}
+function mouseDown(e) {
+  var ball = new Ball(mouse.x, mouse.y, 10, '#ff0000');
+  balls.push(ball);
+}
+canvas.addEventListener('mousemove', mouseMove);
+canvas.addEventListener('mousedown', mouseDown);
+loop();
+
+/* make a button that reverses all the balls direction */
+var button = document.createElement('button');
+button.innerHTML = 'Reverse';
+document.body.appendChild(button);
+button.addEventListener('click', function() {
+  for (var i = 0; i < balls.length; i++) {
+    balls[i].speedX = -balls[i].speedX;
+    balls[i].speedY = -balls[i].speedY;
+  }
+});
+
+/* make a button that increases the size of some balls */
+var button = document.createElement('button');
+button.innerHTML = 'Bigger';
+document.body.appendChild(button);
+button.addEventListener('click', function() {
+  for (var i = 0; i < balls.length; i++) {
+    balls[i].radius += 1;
+  }
+});
+
+/* make a button that decreases the size of some balls */
+var button = document.createElement('button');
+button.innerHTML = 'Smaller';
+document.body.appendChild(button);
+button.addEventListener('click', function() {
+  for (var i = 0; i < balls.length; i++) {
+    balls[i].radius -= 1;
+    if (balls[i].radius < 1) {
+      balls[i].radius = 1; }
+  }
+});
+/* make a slider that increases or decreases the balls speed if its moved left and increases when the slider moves right */
+var slider = document.createElement('input');
+slider.type = 'range';
+slider.min = 0;
+slider.max = 10;
+slider.value = 5;
+document.body.appendChild(slider);
+slider.addEventListener('change', function() {
+  for (var i = 0; i < balls.length; i++) {
+    balls[i].speedX = balls[i].speedX * (slider.value / (slider.max - slider.min));
+    balls[i].speedY = balls[i].speedY * (slider.value / (slider.max - slider.min));
+ }
+});
+
+
+});
+
+        </script>
+    </head>
+</html>
