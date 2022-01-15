@@ -105,9 +105,9 @@ https://wrapperband.github.io/BallGarden.html
 
 # HenBody Simulation
 
-![alt tag](https://raw.githubusercontent.com/wrapperband/Balloon-Click/main/HenBody-small.jpg)
+![alt tag](https://raw.githubusercontent.com/wrapperband/Balloon-Click/main/HenBody.Simulator-small.jpg)
 
-https://wrapperband.github.io/HenBody.html
+https://wrapperband.github.io/HenBody.Simulator.html
 
 # Webadebba Art Simulator
 
