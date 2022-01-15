@@ -1,0 +1,159 @@
+<!-- webadebba generative art
+##  Specification and original idea : Dr A J Doyle
+##  Coded by OpenAI Javascript Codex  -->
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+/* create a webadebba generative art with  a colours button that changes all the colours, make the balls bounce */
+var canvas = document.createElement('canvas');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+document.body.appendChild(canvas);
+var ctx = canvas.getContext('2d');
+var balls = [];
+var numBalls = 100;
+var maxSpeed = 10;
+var minSpeed = 1;
+var maxSize = 10;
+var minSize = 1;
+var maxColour = 255;
+var minColour = 0;
+var maxX = canvas.width;
+var minX = 0;
+var maxY = canvas.height;
+var minY = 0;
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function randomFloat(min, max) {
+  return Math.random() * (max - min) + min;
+}
+function randomColour() {
+  return 'rgb(' + randomInt(minColour, maxColour) + ',' + randomInt(minColour, maxColour) + ',' + randomInt(minColour, maxColour) + ')';
+}
+function randomSpeed() {
+  return randomFloat(minSpeed, maxSpeed);
+}
+function randomSize() {
+  return randomFloat(minSize, maxSize);
+}
+function randomPosition() {
+  return {
+    x: randomFloat(minX, maxX),
+    y: randomFloat(minY, maxY)
+  };
+}
+function randomDirection() {
+  return {
+    x: randomFloat(-1, 1),
+    y: randomFloat(-1, 1)
+  };
+}
+function Ball(position, direction, size, colour) {
+  this.position = position;
+  this.direction = direction;
+  this.size = size;
+  this.colour = colour;
+}
+Ball.prototype.draw = function() {
+  ctx.beginPath();
+  ctx.fillStyle = this.colour;
+  ctx.arc(this.position.x, this.position.y, this.size, 0, Math.PI * 2, true);
+  ctx.fill();
+};
+Ball.prototype.update = function() {
+  this.position.x += this.direction.x;
+  this.position.y += this.direction.y;
+  if (this.position.x > maxX) {
+    this.position.x = maxX;
+    this.direction.x = -this.direction.x;
+  } else if (this.position.x < minX) {
+    this.position.x = minX;
+    this.direction.x = -this.direction.x;
+  }
+  if (this.position.y > maxY) {
+    this.position.y = maxY;
+    this.direction.y = -this.direction.y;
+  } else if (this.position.y < minY) {
+    this.position.y = minY;
+    this.direction.y = -this.direction.y;
+  }
+};
+function createBalls() {
+  for (var i = 0; i < numBalls; i++) {
+    balls.push(new Ball(randomPosition(), randomDirection(), randomSize(), randomColour()));
+  }
+}
+function updateBalls() {
+  for (var i = 0; i < balls.length; i++) {
+    balls[i].update();
+  }
+}
+function drawBalls() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (var i = 0; i < balls.length; i++) {
+    balls[i].draw();
+  }
+}
+function animate() {
+  updateBalls();
+  drawBalls();
+  requestAnimationFrame(animate);
+}
+createBalls();
+animate();
+
+/* there is a panic button that make the balls panic */
+var panicButton = document.createElement('button');
+panicButton.innerHTML = 'Panic';
+document.body.appendChild(panicButton);
+panicButton.addEventListener('click', function() {
+  for (var i = 0; i < balls.length; i++) {
+    balls[i].direction = randomDirection();
+  }
+});
+
+/* the populate button adds more balls */
+var populateButton = document.createElement('button');
+populateButton.innerHTML = 'populate';
+document.body.appendChild(populateButton);
+populateButton.addEventListener('click', function() {
+  var numToAdd = randomInt(1, balls.length / 10);
+  for (var i = 0; i < numToAdd; i++) {
+    balls.push(new Ball(randomPosition(), randomDirection(), randomSize(), randomColour()));
+  }
+});
+
+/* the De-populate button removes a small random percentage of the balls */
+var dePopulateButton = document.createElement('button');
+dePopulateButton.innerHTML = 'de-populate';
+document.body.appendChild(dePopulateButton);
+dePopulateButton.addEventListener('click', function() {
+  var numToRemove = randomInt(1, balls.length / 10);
+  for (var i = 0; i < numToRemove; i++) {
+    balls.pop();
+  }
+});
+
+/* add gravity button makes all the balls fall down */
+var gravityButton = document.createElement('button');
+gravityButton.innerHTML = 'gravity';
+document.body.appendChild(gravityButton);
+gravityButton.addEventListener('click', function() {
+  for (var i = 0; i < balls.length; i++) {
+    balls[i].direction.y = 1;
+  }
+});
+
+
+
+
+
+});
+        </script>
+    </head>
+</html>
