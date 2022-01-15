@@ -1,0 +1,81 @@
+<!--HenBody Simulator
+##  Specification and original idea : Dr A J Doyle
+##  Coded by OpenAI Javascript Codex  -->
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+/* N body gravity simulator, click screen to add bodies and add body button to add bodies to the simulation */
+var canvas = document.createElement('canvas');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+document.body.appendChild(canvas);
+var ctx = canvas.getContext('2d');
+var mouse = {
+  x: 0,
+  y: 0
+};
+var gravity = {
+  x: 0,
+  y: 0
+};
+var bodies = [];
+var addBody = function(e) {
+  var body = {
+    x: e.clientX,
+    y: e.clientY,
+    vx: 0,
+    vy: 0,
+    mass: Math.random() * 10 + 1
+  };
+  bodies.push(body);
+};
+window.addEventListener('mousemove', function(e) {
+  mouse.x = e.clientX;
+  mouse.y = e.clientY;
+});
+window.addEventListener('click', addBody);
+var update = function() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (var i = 0; i < bodies.length; i++) {
+    var body = bodies[i];
+    body.x += body.vx;
+    body.y += body.vy;
+    body.vx += gravity.x / body.mass;
+    body.vy += gravity.y / body.mass;
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+    ctx.beginPath();
+    ctx.arc(body.x, body.y, body.mass, 0, Math.PI * 2, false);
+    ctx.fill();
+  }
+  for (var i = 0; i < bodies.length; i++) {
+    var body = bodies[i];
+    for (var j = i + 1; j < bodies.length; j++) {
+      var other = bodies[j];
+      var dx = body.x - other.x;
+      var dy = body.y - other.y;
+      var distance = Math.sqrt(dx * dx + dy * dy);
+      var force = body.mass * other.mass / (distance * distance);
+      var ax = dx / distance * force;
+      var ay = dy / distance * force;
+      body.vx -= ax;
+      body.vy -= ay;
+      other.vx += ax;
+      other.vy += ay;
+    }
+  }
+};
+var render = function() {
+  requestAnimationFrame(render);
+  update();
+};
+render();
+
+
+});
+        </script>
+    </head>
+</html>
